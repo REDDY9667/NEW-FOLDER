@@ -1,0 +1,181 @@
+diff --git a/backend/package.json b/backend/package.json
+new file mode 100644
+index 0000000..a3f1c92
+--- /dev/null
++++ b/backend/package.json
+@@ -0,0 +1,57 @@
++{
++  "name": "secondbrain-backend",
++  "version": "1.0.0",
++  "description": "SecondBrain API - AI-powered knowledge decay detector",
++  "main": "dist/server.js",
++  "scripts": {
++    "dev": "nodemon src/server.ts",
++    "build": "tsc",
++    "start": "node dist/server.js",
++    "test": "jest --coverage",
++    "test:watch": "jest --watch",
++    "lint": "eslint src/**/*.ts",
++    "lint:fix": "eslint src/**/*.ts --fix",
++    "swagger": "node -e \"console.log('Swagger docs available at http://localhost:3000/api-docs')\""
++  },
++  "keywords": ["ai", "knowledge-management", "spaced-repetition"],
++  "author": "Your Name",
++  "license": "MIT",
++  "dependencies": {
++    "axios": "^1.6.5",
++    "bcrypt": "^5.1.1",
++    "bull": "^4.12.0",
++    "cors": "^2.8.5",
++    "dotenv": "^16.4.1",
++    "express": "^4.18.2",
++    "express-rate-limit": "^7.1.5",
++    "helmet": "^7.1.0",
++    "ioredis": "^5.3.2",
++    "joi": "^17.12.0",
++    "jsonwebtoken": "^9.0.2",
++    "mongoose": "^8.1.1",
++    "multer": "^1.4.5-lts.1",
++    "openai": "^4.104.0",
++    "pdf-parse": "^1.1.1",
++    "socket.io": "^4.6.1",
++    "swagger-jsdoc": "^6.3.0",
++    "swagger-ui-express": "^5.0.1",
++    "winston": "^3.11.0"
++  },
++  "devDependencies": {
++    "@types/bcrypt": "^5.0.2",
++    "@types/cors": "^2.8.17",
++    "@types/express": "^4.17.21",
++    "@types/jest": "^29.5.11",
++    "@types/jsonwebtoken": "^9.0.5",
++    "@types/multer": "^1.4.11",
++    "@types/node": "^20.19.41",
++    "@types/pdf-parse": "^1.1.5",
++    "@types/supertest": "^6.0.2",
++    "@types/swagger-jsdoc": "^6.0.4",
++    "@types/swagger-ui-express": "^4.1.8",
++    "@typescript-eslint/eslint-plugin": "^6.19.0",
++    "@typescript-eslint/parser": "^6.19.0",
++    "eslint": "^8.56.0",
++    "jest": "^29.7.0",
++    "nodemon": "^3.0.3",
++    "supertest": "^6.3.4",
++    "ts-jest": "^29.1.1",
++    "ts-node": "^10.9.2",
++    "typescript": "^5.3.3"
++  },
++  "engines": {
++    "node": ">=20.0.0",
++    "npm": ">=10.0.0"
++  }
++}
+
+diff --git a/backend/tsconfig.json b/backend/tsconfig.json
+new file mode 100644
+index 0000000..b7e2a11
+--- /dev/null
++++ b/backend/tsconfig.json
+@@ -0,0 +1,22 @@
++{
++  "compilerOptions": {
++    "target": "ES2020",
++    "module": "commonjs",
++    "lib": ["ES2020"],
++    "outDir": "./dist",
++    "rootDir": "./src",
++    "strict": true,
++    "esModuleInterop": true,
++    "skipLibCheck": true,
++    "forceConsistentCasingInFileNames": true,
++    "resolveJsonModule": true,
++    "moduleResolution": "node",
++    "allowSyntheticDefaultImports": true,
++    "declaration": true,
++    "declarationMap": true,
++    "sourceMap": true,
++    "noUnusedLocals": false,
++    "noUnusedParameters": false,
++    "noImplicitReturns": true,
++    "noFallthroughCasesInSwitch": true
++  },
++  "include": ["src/**/*"],
++  "exclude": ["node_modules", "dist", "**/*.test.ts"]
++}
+
+diff --git a/backend/.env.example b/backend/.env.example
+new file mode 100644
+index 0000000..c4d0e51
+--- /dev/null
++++ b/backend/.env.example
+@@ -0,0 +1,27 @@
++# Application
++NODE_ENV=development
++PORT=3000
++
++# Database
++MONGODB_URI=mongodb://localhost:27017/secondbrain
++
++# Cache
++REDIS_URL=redis://localhost:6379
++
++# JWT Authentication
++JWT_SECRET=your_jwt_secret_change_this_to_something_long_and_random
++JWT_EXPIRES_IN=7d
++JWT_REFRESH_EXPIRES_IN=30d
++
++# AI Services
++OPENAI_API_KEY=
++GOOGLE_VISION_API_KEY=
++
++# Client
++CLIENT_URL=http://localhost:4200
++FRONTEND_URL=http://localhost:4200
++
++# File Upload (bytes — 10 MB default)
++MAX_FILE_SIZE=10485760
++
++# Rate Limiting
++RATE_LIMIT_WINDOW_MS=900000
++RATE_LIMIT_MAX_REQUESTS=100
+
+diff --git a/backend/.gitignore b/backend/.gitignore
+new file mode 100644
+index 0000000..d8f3c07
+--- /dev/null
++++ b/backend/.gitignore
+@@ -0,0 +1,28 @@
++# Dependencies
++node_modules/
++
++# Build output
++dist/
++
++# Logs
++logs/
++*.log
++npm-debug.log*
++yarn-debug.log*
++yarn-error.log*
++
++# Environment variables — never commit real secrets
++.env
++
++# Uploaded files (preserve directory structure, not files)
++uploads/*.pdf
++uploads/*.jpg
++uploads/*.jpeg
++uploads/*.png
++uploads/*.txt
++uploads/*.md
++
++# TypeScript build info
++*.tsbuildinfo
++
++# Test coverage
++coverage/
++
++# macOS / IDE
++.DS_Store
++.vscode/
++.idea/
